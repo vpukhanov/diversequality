@@ -1,11 +1,41 @@
 # Diversequality
 
-Hey everyone,
+Diversequality is a web application that analyzes news articles and events through the lens of diversity, equity, and inclusion. It provides insights into how current events and decisions impact societal progress.
 
-I built Diversequality because I care about whether we're moving forward or backward in making our society more inclusive. Every big event, legal decision, executive move, or policy shift has a real impact on communities around the world. This tool helps make sense of the news through that lens.
+[Try out the live version at dvrst.io](https://dvrst.io)
 
-Share a news article or event description, and the app will provide a summary, analyze how it might advance or hinder DEI progress, and give an honest score from -100 to 100 — showing whether it represents a step forward or backward for inclusion.
+## Tech Stack
 
-I hope this tool helps us see beyond headlines and understand the real-world impact of events on minorities today, and on all of us tomorrow. This perspective is meaningful to me, and I hope you'll find it valuable too.
+- [Next.js](https://nextjs.org/) with App Router
+- [Neon](https://neon.tech/) database (Serverless Postgres)
+- [Drizzle ORM](https://orm.drizzle.team/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [OpenRouter](https://openrouter.ai/) AI Provider
+- [Upstash](https://upstash.com/) Rate Limiting
+- [PostHog](https://posthog.com/) Analytics
+- [Shadcn](https://ui.shadcn.com/) UI Components
 
-P.S. While Diversequality aims to promote understanding of DEI issues, it isn't meant to tell you what to think. It's simply one lens that can offer a different perspective.
+## Setup
+
+Copy the environment variables file and fill in your values:
+
+```bash
+cp .env.example .env
+```
+
+Required environment variables:
+
+- \`DATABASE_URL\`: Neon database connection string
+- \`OPENROUTER_API_KEY\`: OpenRouter API key
+- \`NEXT_PUBLIC_POSTHOG_KEY\`: PostHog project API key
+- \`NEXT_PUBLIC_POSTHOG_HOST\`: PostHog host URL
+- \`UPSTASH_REDIS_REST_URL\`: Upstash Redis REST URL
+- \`UPSTASH_REDIS_REST_TOKEN\`: Upstash Redis REST token
+
+Run the development server:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
