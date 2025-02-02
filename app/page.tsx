@@ -1,6 +1,7 @@
 import { FileText, ListChecks, Gauge } from "lucide-react";
 import type { Metadata } from "next";
 
+import AnalysisForm from "@/components/analysis-form";
 import FeatureCard from "@/components/feature-card";
 
 export const metadata: Metadata = {
@@ -15,7 +16,7 @@ export default function Home() {
       <h1 className="mb-8 text-center text-4xl font-bold text-accent-foreground md:text-5xl">
         Diversequality
       </h1>
-      <p>Hey everyone,</p>
+      <p>Hey there,</p>
       <p>
         I built Diversequality because I care about whether we&apos;re moving
         forward or backward in making our society more inclusive. Every big
@@ -46,6 +47,7 @@ export default function Home() {
         tomorrow. This perspective is meaningful to me, and I hope you&apos;ll
         find it valuable too.
       </p>
+      <AnalysisForm />
       <p className="text-sm text-muted-foreground">
         P.S. While Diversequality aims to promote understanding of DEI issues,
         it isn&apos;t meant to tell you what to think. It&apos;s simply one lens
