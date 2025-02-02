@@ -4,6 +4,9 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { analyseAndSave } from "../analysis";
+import { PostHogServer } from "../posthog-server";
+
+const posthog = PostHogServer();
 
 const schema = z.object({
   text: z
@@ -27,8 +30,14 @@ export async function requestAnalysis(_: unknown, form: FormData) {
   try {
     id = await analyseAndSave(validatedFields.data.text);
   } catch (error) {
-    console.error(error);
-    // TODO: Capture the exception in Sentry or something
+    // TODO: Add error tracking when PostHog releases it [https://github.com/PostHog/posthog-js-lite/pull/366]
+    posthog.capture({
+      event: "analysis error",
+      distinctId: "unknown",
+      properties: {
+        error: error instanceof Error ? error.message : String(error),
+      },
+    });
     return {
       errors: { text: ["Could not analyze this text, please try again later"] },
     };
