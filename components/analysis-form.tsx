@@ -2,18 +2,22 @@
 
 import { useActionState } from "react";
 
-import { requestAnalysis } from "@/lib/analysis";
+import { requestAnalysis } from "@/lib/actions/request-analysis";
 
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 
 export default function AnalysisForm() {
-  const [, action, pending] = useActionState(requestAnalysis, null);
+  const [state, action, pending] = useActionState(requestAnalysis, {
+    errors: {},
+  });
 
   return (
     <form action={action} className="space-y-2 font-sans">
       <Textarea
         name="text"
+        minLength={100}
+        maxLength={10000}
         placeholder="Paste your article or describe the event here..."
         className="min-h-[200px] bg-white"
         required
@@ -25,6 +29,13 @@ export default function AnalysisForm() {
       >
         Analyze
       </Button>
+      <div aria-live="polite">
+        {state?.errors.text && (
+          <p className="text-center text-sm text-red-600">
+            {state.errors.text}
+          </p>
+        )}
+      </div>
     </form>
   );
 }
