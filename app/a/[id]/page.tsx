@@ -1,18 +1,28 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { z } from "zod";
 
 import Gauge from "@/components/gauge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAnalysisForUi } from "@/lib/db/queries";
+
+const schema = z.object({
+  id: z.string().uuid(),
+});
 
 export default async function AnalysisPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
-  const analysis = await getAnalysisForUi(id);
+  // Make sure the id is a valid uuid
+  const validatedParams = schema.safeParse(await params);
+  if (!validatedParams.success) {
+    return notFound();
+  }
 
+  // Make sure the analysis exists
+  const analysis = await getAnalysisForUi(validatedParams.data.id);
   if (!analysis) {
     return notFound();
   }
