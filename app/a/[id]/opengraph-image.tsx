@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
 
-import { Props, getAnalysis } from "./page";
+import { getAnalysis, Props } from "./analysis";
 
 export const runtime = "edge";
 

@@ -1,19 +1,11 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { z } from "zod";
 
 import Gauge from "@/components/gauge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getAnalysisForUi } from "@/lib/db/queries";
 
-const schema = z.object({
-  id: z.string().uuid(),
-});
-
-export type Props = {
-  params: Promise<{ id: string }>;
-};
+import { getAnalysis, Props } from "./analysis";
 
 export default async function AnalysisPage({ params }: Props) {
   const analysis = await getAnalysis(params);
@@ -71,15 +63,4 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       follow: false,
     },
   };
-}
-
-export async function getAnalysis(params: Props["params"]) {
-  // Make sure the id is a valid uuid
-  const validatedParams = schema.safeParse(await params);
-  if (!validatedParams.success) {
-    return notFound();
-  }
-
-  // Make sure the analysis exists
-  return getAnalysisForUi(validatedParams.data.id);
 }
