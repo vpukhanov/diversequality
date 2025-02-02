@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { z } from "zod";
@@ -10,19 +11,12 @@ const schema = z.object({
   id: z.string().uuid(),
 });
 
-export default async function AnalysisPage({
-  params,
-}: {
+export type Props = {
   params: Promise<{ id: string }>;
-}) {
-  // Make sure the id is a valid uuid
-  const validatedParams = schema.safeParse(await params);
-  if (!validatedParams.success) {
-    return notFound();
-  }
+};
 
-  // Make sure the analysis exists
-  const analysis = await getAnalysisForUi(validatedParams.data.id);
+export default async function AnalysisPage({ params }: Props) {
+  const analysis = await getAnalysis(params);
   if (!analysis) {
     return notFound();
   }
@@ -61,4 +55,31 @@ export default async function AnalysisPage({
       </Card>
     </main>
   );
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const analysis = await getAnalysis(params);
+  if (!analysis) {
+    return notFound();
+  }
+
+  return {
+    title: `${analysis.title} | Diversequality`,
+    description: analysis.summary,
+    robots: {
+      index: false,
+      follow: false,
+    },
+  };
+}
+
+export async function getAnalysis(params: Props["params"]) {
+  // Make sure the id is a valid uuid
+  const validatedParams = schema.safeParse(await params);
+  if (!validatedParams.success) {
+    return notFound();
+  }
+
+  // Make sure the analysis exists
+  return getAnalysisForUi(validatedParams.data.id);
 }

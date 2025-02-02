@@ -8,6 +8,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        serif: ["Georgia", "Cambria", "Times New Roman", "Times", "serif"],
+        sans: ["Helvetica", "Arial", "sans-serif"],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
