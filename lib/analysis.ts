@@ -10,11 +10,10 @@ import { PostHogServer } from "./posthog-server";
 
 const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
-  // TODO: Add headers before publishing
-  // headers: {
-  //   "HTTP-Referer": "https://diversequality.com",
-  //   "X-Title": "Diversequality",
-  // },
+  headers: {
+    "HTTP-Referer": "https://dvrst.io",
+    "X-Title": "Diversequality",
+  },
 });
 
 const model = withTracing(
