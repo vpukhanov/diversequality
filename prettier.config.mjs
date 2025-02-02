@@ -3,7 +3,7 @@ const config = {
     "@trivago/prettier-plugin-sort-imports",
     "prettier-plugin-tailwindcss",
   ],
-  importOrder: ["<THIRD_PARTY_MODULES>", "^@/(.*)$", "^[./]"],
+  importOrder: ["server-only", "<THIRD_PARTY_MODULES>", "^@/(.*)$", "^[./]"],
   importOrderSeparation: true,
 };
 

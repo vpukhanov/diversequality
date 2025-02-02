@@ -1,20 +1,9 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 import Gauge from "@/components/gauge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-const mockResult = {
-  title: "Tech Company Announces $50M Investment in Diversity Initiatives",
-  summary:
-    "Major tech company announces $50M investment in diversity initiatives and STEM education programs for underserved communities.",
-  impact: [
-    "Increases access to tech education for marginalized communities",
-    "Creates new job opportunities and career pathways",
-    "Sets precedent for corporate investment in DEI",
-    "Demonstrates tangible commitment to systemic change",
-  ],
-  score: 75,
-};
+import { getAnalysisForUi } from "@/lib/db/queries";
 
 export default async function AnalysisPage({
   params,
@@ -22,7 +11,11 @@ export default async function AnalysisPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  console.log(id);
+  const analysis = await getAnalysisForUi(id);
+
+  if (!analysis) {
+    return notFound();
+  }
 
   return (
     <main className="space-y-5 text-lg leading-relaxed">
@@ -32,14 +25,14 @@ export default async function AnalysisPage({
       >
         Diversequality
       </Link>
-      <h1 className="text-center text-3xl font-semibold">{mockResult.title}</h1>
-      <Gauge score={mockResult.score} />
+      <h1 className="text-center text-3xl font-semibold">{analysis.title}</h1>
+      <Gauge score={analysis.score} />
       <Card>
         <CardHeader>
           <CardTitle className="text-accent-foreground">Summary</CardTitle>
         </CardHeader>
         <CardContent>
-          <p>{mockResult.summary}</p>
+          <p>{analysis.summary}</p>
         </CardContent>
       </Card>
       <Card>
@@ -50,7 +43,7 @@ export default async function AnalysisPage({
         </CardHeader>
         <CardContent>
           <ul className="list-inside list-disc space-y-2">
-            {mockResult.impact.map((point) => (
+            {analysis.impact.map((point) => (
               <li key={point}>{point}</li>
             ))}
           </ul>
