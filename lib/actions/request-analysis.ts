@@ -30,6 +30,10 @@ export async function requestAnalysis(_: unknown, form: FormData) {
   const ip = (await headers()).get("x-forwarded-for") ?? "unknown";
   const { success, limit } = await ratelimit.limit(ip);
   if (!success) {
+    posthog.capture({
+      event: "rate limit error",
+      distinctId: ip,
+    });
     return {
       errors: { text: [`You can only perform ${limit} analyses per day`] },
     };
@@ -51,7 +55,7 @@ export async function requestAnalysis(_: unknown, form: FormData) {
     // TODO: Add error tracking when PostHog releases it [https://github.com/PostHog/posthog-js-lite/pull/366]
     posthog.capture({
       event: "analysis error",
-      distinctId: "unknown",
+      distinctId: ip,
       properties: {
         error: error instanceof Error ? error.message : String(error),
       },
