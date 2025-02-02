@@ -1,10 +1,12 @@
 import "server-only";
 
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
+import { withTracing } from "@posthog/ai";
 import { generateObject } from "ai";
 import { z } from "zod";
 
 import { storeAnalysis } from "./db/mutations";
+import { PostHogServer } from "./posthog-server";
 
 const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
@@ -15,6 +17,12 @@ const openrouter = createOpenRouter({
   // },
 });
 
+const model = withTracing(
+  openrouter("openai/gpt-4o-mini"),
+  PostHogServer(),
+  {},
+);
+
 const schema = z.object({
   title: z.string(),
   summary: z.string(),
@@ -24,7 +32,7 @@ const schema = z.object({
 
 export async function analyseAndSave(text: string) {
   const { object } = await generateObject({
-    model: openrouter("openai/gpt-4o-mini"),
+    model,
     schema,
     system: `
 You are an expert news analysis assistant specializing in evaluating how a described event, update, or situation will affect the progress of Diversity, Equity, and Inclusion (DEI). Your task is to assess the impact on DEI progressiveness—not merely to summarize reality, but to evaluate whether the event drives DEI forward or hinders it.

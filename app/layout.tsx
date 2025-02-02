@@ -1,4 +1,5 @@
 import "./globals.css";
+import { PostHogProvider } from "./providers";
 
 export default function RootLayout({
   children,
@@ -8,9 +9,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-serif antialiased">
-        <div className="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6 py-16">
-          {children}
-        </div>
+        <PostHogProvider>
+          <div className="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6 py-16">
+            {children}
+          </div>
+        </PostHogProvider>
       </body>
     </html>
   );
