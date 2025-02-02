@@ -42,7 +42,7 @@ export default async function AnalysisPage({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <ul className="list-inside list-disc space-y-2">
+          <ul className="list-disc space-y-2 pl-4">
             {analysis.impact.map((point) => (
               <li key={point}>{point}</li>
             ))}
