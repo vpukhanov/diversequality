@@ -1,6 +1,9 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { z } from "zod";
+
+import { analyseAndSave } from "../analysis";
 
 const schema = z.object({
   text: z
@@ -20,6 +23,7 @@ export async function requestAnalysis(_: unknown, form: FormData) {
     return { errors: validatedFields.error.flatten().fieldErrors };
   }
 
-  const text = form.get("text");
-  console.log(text);
+  const id = await analyseAndSave(validatedFields.data.text);
+
+  redirect(`/a/${id}`);
 }
