@@ -1,8 +1,8 @@
 import { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import Gauge from "@/components/gauge";
+import PageTitle from "@/components/page-title";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { getAnalysis, Props } from "./analysis";
@@ -15,12 +15,7 @@ export default async function AnalysisPage({ params }: Props) {
 
   return (
     <main className="space-y-5 text-lg leading-relaxed">
-      <Link
-        href="/"
-        className="mb-8 block text-center text-4xl font-bold text-accent-foreground md:text-5xl"
-      >
-        Diversequality
-      </Link>
+      <PageTitle isLink />
       <h1 className="text-center text-3xl font-semibold">{analysis.title}</h1>
       <Gauge score={analysis.score} />
       <Card>
