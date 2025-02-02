@@ -1,12 +1,4 @@
-import type { Metadata } from "next";
-
 import "./globals.css";
-
-export const metadata: Metadata = {
-  title: "Diversequality",
-  description:
-    "Look at the global events through the lens of diversity and inclusion",
-};
 
 export default function RootLayout({
   children,
@@ -15,7 +7,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}</body>
+      <body className="font-serif antialiased">
+        <div className="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6 py-16">
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
