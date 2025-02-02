@@ -7,11 +7,13 @@ Diversequality is a web application that analyzes news articles and events throu
 ## Tech Stack
 
 - [Next.js](https://nextjs.org/) with App Router
+- [Vercel AI SDK](https://sdk.vercel.ai/)
 - [Neon](https://neon.tech/) database (Serverless Postgres)
 - [Drizzle ORM](https://orm.drizzle.team/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [OpenRouter](https://openrouter.ai/) AI Provider
-- [Upstash](https://upstash.com/) Rate Limiting
+- [Upstash](https://upstash.com/) Redis and Rate Limiting
+- [Zod](https://zod.dev/) Schema Validation
 - [PostHog](https://posthog.com/) Analytics
 - [Shadcn](https://ui.shadcn.com/) UI Components
 
