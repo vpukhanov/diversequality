@@ -9,9 +9,9 @@ const schema = z.object({
   text: z
     .string({ required_error: "Text is required" })
     .min(100, { message: "Text must be at least 100 characters" })
-    // Zod counts length of the string different from client side textarea, so we add 1000 to the max length
+    // Zod counts length of the string different from client side textarea, so we add 2000 to the max length
     // to account for the small difference and not ruin the user experience
-    .max(11000, { message: "Text must be less than 10,000 characters" }),
+    .max(22000, { message: "Text must be less than 20,000 characters" }),
 });
 
 export async function requestAnalysis(_: unknown, form: FormData) {
@@ -23,13 +23,16 @@ export async function requestAnalysis(_: unknown, form: FormData) {
     return { errors: validatedFields.error.flatten().fieldErrors };
   }
 
+  let id: string;
   try {
-    const id = await analyseAndSave(validatedFields.data.text);
-    redirect(`/a/${id}`);
-  } catch {
+    id = await analyseAndSave(validatedFields.data.text);
+  } catch (error) {
+    console.error(error);
     // TODO: Capture the exception in Sentry or something
     return {
       errors: { text: ["Could not analyze this text, please try again later"] },
     };
   }
+
+  redirect(`/a/${id}`);
 }
