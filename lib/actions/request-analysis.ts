@@ -1,5 +1,8 @@
 "use server";
 
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -7,6 +10,11 @@ import { analyseAndSave } from "../analysis";
 import { PostHogServer } from "../posthog-server";
 
 const posthog = PostHogServer();
+
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(10, "24 h"),
+});
 
 const schema = z.object({
   text: z
@@ -18,14 +26,24 @@ const schema = z.object({
 });
 
 export async function requestAnalysis(_: unknown, form: FormData) {
+  // Check if the user has exceeded the daily limit
+  const ip = (await headers()).get("x-forwarded-for") ?? "unknown";
+  const { success, limit } = await ratelimit.limit(ip);
+  if (!success) {
+    return {
+      errors: { text: [`You can only perform ${limit} analyses per day`] },
+    };
+  }
+
+  // Check if the submitted form data is valid
   const validatedFields = schema.safeParse({
     text: form.get("text"),
   });
-
   if (!validatedFields.success) {
     return { errors: validatedFields.error.flatten().fieldErrors };
   }
 
+  // Analyse the text and save the analysis
   let id: string;
   try {
     id = await analyseAndSave(validatedFields.data.text);
