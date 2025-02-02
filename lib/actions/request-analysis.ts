@@ -23,7 +23,13 @@ export async function requestAnalysis(_: unknown, form: FormData) {
     return { errors: validatedFields.error.flatten().fieldErrors };
   }
 
-  const id = await analyseAndSave(validatedFields.data.text);
-
-  redirect(`/a/${id}`);
+  try {
+    const id = await analyseAndSave(validatedFields.data.text);
+    redirect(`/a/${id}`);
+  } catch {
+    // TODO: Capture the exception in Sentry or something
+    return {
+      errors: { text: ["Could not analyze this text, please try again later"] },
+    };
+  }
 }
