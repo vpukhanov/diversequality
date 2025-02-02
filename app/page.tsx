@@ -16,13 +16,13 @@ export default function HomePage() {
       <h1 className="mb-8 text-center text-4xl font-bold text-accent-foreground md:text-5xl">
         Diversequality
       </h1>
-      <p>Hey there,</p>
+      <p>Hey everyone,</p>
       <p>
         I built Diversequality because I care about whether we&apos;re moving
         forward or backward in making our society more inclusive. Every big
         event, legal decision, executive move, or policy shift has a real impact
-        on communities around the world. This tool helps make sense of the news
-        through that lens.
+        on communities around the world. This is a tool to help make sense of
+        the news through that lens.
       </p>
       <div className="my-12 grid gap-4 md:grid-cols-3">
         <FeatureCard
@@ -42,7 +42,7 @@ export default function HomePage() {
         />
       </div>
       <p>
-        I hope this tool helps us see beyond headlines and understand the
+        I hope this makes it easier to see beyond headlines and understand the
         real-world impact of events on minorities today, and on all of us
         tomorrow. This perspective is meaningful to me, and I hope you&apos;ll
         find it valuable too.

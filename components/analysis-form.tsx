@@ -35,7 +35,27 @@ export default function AnalysisForm() {
             {state.errors.text}
           </p>
         )}
+        {pending && <Loader />}
       </div>
     </form>
+  );
+}
+
+function Loader() {
+  return (
+    <div className="flex flex-col items-center justify-center space-y-4 py-8">
+      <div className="relative h-16 w-16">
+        <div className="absolute left-0 top-0 h-full w-full">
+          <div className="h-16 w-16 rounded-full border-4 border-secondary opacity-20"></div>
+        </div>
+        <div className="absolute left-0 top-0 h-full w-full">
+          <div
+            className="h-16 w-16 animate-spin rounded-full border-4 border-t-secondary"
+            style={{ animationDuration: "1.5s" }}
+          ></div>
+        </div>
+      </div>
+      <p className="text-warm-muted font-serif text-sm">Analyzing content...</p>
+    </div>
   );
 }
