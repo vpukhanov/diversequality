@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import Gauge from "@/components/gauge";
 import PageTitle from "@/components/page-title";
+import ShareButton from "@/components/share-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { getAnalysis, Props } from "./analysis";
@@ -18,6 +19,9 @@ export default async function AnalysisPage({ params }: Props) {
       <PageTitle isLink />
       <h1 className="text-center text-3xl font-semibold">{analysis.title}</h1>
       <Gauge score={analysis.score} />
+      <div className="text-center">
+        <ShareButton />
+      </div>
       <Card>
         <CardHeader>
           <CardTitle className="text-accent-foreground">Summary</CardTitle>
