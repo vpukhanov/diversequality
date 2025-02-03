@@ -26,6 +26,14 @@ const schema = z.object({
 });
 
 export async function requestAnalysis(_: unknown, form: FormData) {
+  // Check if the submitted form data is valid
+  const validatedFields = schema.safeParse({
+    text: form.get("text"),
+  });
+  if (!validatedFields.success) {
+    return { errors: validatedFields.error.flatten().fieldErrors };
+  }
+
   // Check if the user has exceeded the daily limit
   const ip = (await headers()).get("x-forwarded-for") ?? "unknown";
   const { success, limit } = await ratelimit.limit(ip);
@@ -37,14 +45,6 @@ export async function requestAnalysis(_: unknown, form: FormData) {
     return {
       errors: { text: [`You can only perform ${limit} analyses per day`] },
     };
-  }
-
-  // Check if the submitted form data is valid
-  const validatedFields = schema.safeParse({
-    text: form.get("text"),
-  });
-  if (!validatedFields.success) {
-    return { errors: validatedFields.error.flatten().fieldErrors };
   }
 
   // Analyse the text and save the analysis
@@ -61,9 +61,21 @@ export async function requestAnalysis(_: unknown, form: FormData) {
       },
     });
     return {
-      errors: { text: ["Could not analyze this text, please try again later"] },
+      errors: {
+        text: [
+          "Could not analyze this text, please try a different one or try again later",
+        ],
+      },
     };
   }
+
+  posthog.capture({
+    event: "analysis success",
+    distinctId: ip,
+    properties: {
+      id,
+    },
+  });
 
   redirect(`/a/${id}`);
 }
