@@ -25,16 +25,17 @@ export default function ShareButton() {
       }
     }
 
-    await navigator.clipboard.writeText(window.location.href);
-
-    setCopied(true);
-    const timeout = setTimeout(() => setCopied(false), 2000);
-    return () => clearTimeout(timeout);
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+      console.error("Failed to copy link", error);
+    }
   };
 
   return (
     <Button
-      type="submit"
       onClick={handleShare}
       className="bg-[#9A8C98] px-4 py-2 font-sans text-lg text-white transition-colors duration-300 hover:bg-[#4A4E69]"
     >
