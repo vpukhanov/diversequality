@@ -44,7 +44,7 @@ First, determine if the text is relevant for DEI analysis. The text should be:
 2. Something that could potentially impact diversity, equity, or inclusion in society
 3. Coherent and comprehensible content
 
-If the text is irrelevant (e.g., random text, personal messages, recipes, code snippets, or content with no connection to DEI), output:
+If the text is irrelevant (e.g., random text, personal messages, recipes, code snippets, inappropriate content, or content with no connection to DEI), output:
 {
   "type": "irrelevant",
   "summary": "<very brief explanation of why the text cannot be analyzed for DEI impact>",
