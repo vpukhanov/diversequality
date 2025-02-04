@@ -1,7 +1,9 @@
 "use client";
 
+import { useContext } from "react";
 import { useActionState } from "react";
 
+import { DistinctIdContext } from "@/app/providers";
 import { requestAnalysis } from "@/lib/actions/request-analysis";
 
 import { Button } from "./ui/button";
@@ -11,6 +13,8 @@ export default function AnalysisForm() {
   const [state, action, pending] = useActionState(requestAnalysis, {
     errors: {},
   });
+
+  const distinctId = useContext(DistinctIdContext);
 
   return (
     <form action={action} className="space-y-2 font-sans">
@@ -22,6 +26,7 @@ export default function AnalysisForm() {
         className="min-h-[200px] bg-white"
         required
       />
+      <input type="hidden" name="distinctId" value={distinctId ?? ""} />
       <Button
         type="submit"
         disabled={pending}

@@ -7,9 +7,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { analyseAndSave } from "../analysis";
-import { PostHogServer } from "../posthog-server";
-
-const posthog = PostHogServer();
+import serverPosthog from "../server-posthog";
 
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
@@ -23,12 +21,14 @@ const schema = z.object({
     // Zod counts length of the string different from client side textarea, so we add 2000 to the max length
     // to account for the small difference and not ruin the user experience
     .max(22000, { message: "Text must be less than 20,000 characters" }),
+  distinctId: z.string().optional().default("none"),
 });
 
 export async function requestAnalysis(_: unknown, form: FormData) {
   // Check if the submitted form data is valid
   const validatedFields = schema.safeParse({
     text: form.get("text"),
+    distinctId: form.get("distinctId"),
   });
   if (!validatedFields.success) {
     return { errors: validatedFields.error.flatten().fieldErrors };
@@ -38,9 +38,9 @@ export async function requestAnalysis(_: unknown, form: FormData) {
   const ip = (await headers()).get("x-forwarded-for") ?? "unknown";
   const { success, limit } = await ratelimit.limit(ip);
   if (!success) {
-    posthog.capture({
+    serverPosthog.capture({
       event: "rate limit error",
-      distinctId: ip,
+      distinctId: validatedFields.data.distinctId,
     });
     return {
       errors: { text: [`You can only perform ${limit} analyses per day`] },
@@ -50,12 +50,15 @@ export async function requestAnalysis(_: unknown, form: FormData) {
   // Analyse the text and save the analysis
   let id: string;
   try {
-    id = await analyseAndSave(validatedFields.data.text);
+    id = await analyseAndSave(
+      validatedFields.data.text,
+      validatedFields.data.distinctId,
+    );
   } catch (error) {
     // TODO: Add error tracking when PostHog releases it [https://github.com/PostHog/posthog-js-lite/pull/366]
-    posthog.capture({
+    serverPosthog.capture({
       event: "analysis error",
-      distinctId: ip,
+      distinctId: validatedFields.data.distinctId,
       properties: {
         error: error instanceof Error ? error.message : String(error),
       },
@@ -69,9 +72,9 @@ export async function requestAnalysis(_: unknown, form: FormData) {
     };
   }
 
-  posthog.capture({
+  serverPosthog.capture({
     event: "analysis success",
-    distinctId: ip,
+    distinctId: validatedFields.data.distinctId,
     properties: {
       id,
     },

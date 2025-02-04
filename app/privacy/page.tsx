@@ -52,11 +52,6 @@ export default function PrivacyPage() {
                 to prevent abuse of the service. You can perform up to 10
                 analyses per day.
               </li>
-              <li>
-                IP addresses are also used to track and diagnose errors you may
-                encounter while using the service, such as AI analysis failures.
-                This helps me improve the service reliability.
-              </li>
             </ul>
           </div>
 
@@ -73,6 +68,12 @@ export default function PrivacyPage() {
                   privacy policy
                 </a>{" "}
                 applies to this data collection.
+              </li>
+              <li>
+                I generate a random identifier to analyze your interactions with
+                the website and track any errors you encounter. This information
+                enables me to gather usage analytics, which in turn helps
+                enhance the service and its reliability.
               </li>
             </ul>
           </div>
@@ -92,7 +93,7 @@ export default function PrivacyPage() {
               maintain the accessibility of analysis URLs.
             </li>
             <li>
-              IP addresses used for rate limiting are not permanently stored.
+              IP addresses used for rate limiting are only stored temporarily.
             </li>
           </ul>
         </CardContent>
@@ -129,7 +130,7 @@ export default function PrivacyPage() {
       </Card>
 
       <p className="text-center text-sm text-muted-foreground">
-        Last updated: February 2nd, 2025
+        Last updated: February 4th, 2025
       </p>
     </main>
   );
