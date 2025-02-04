@@ -19,13 +19,15 @@ export default function RootLayout({
                 <a
                   href="https://github.com/vpukhanov/diversequality"
                   target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-foreground"
+                  className="underline hover:text-foreground"
                 >
                   Source Code
                 </a>
                 <span>·</span>
-                <Link href="/privacy" className="hover:text-foreground">
+                <Link
+                  href="/privacy"
+                  className="underline hover:text-foreground"
+                >
                   Privacy Policy
                 </Link>
               </div>

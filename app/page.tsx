@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 import AnalysisForm from "@/components/analysis-form";
 import FeatureCard from "@/components/feature-card";
-import PageTitle from "@/components/page-title";
+import Header from "@/components/header";
 
 export const metadata: Metadata = {
   title: "Diversequality",
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <main className="space-y-5 text-lg leading-relaxed">
-      <PageTitle isMainHeading />
+      <Header isH1 />
       <p>Hey everyone,</p>
       <p>
         I built Diversequality because I care about whether we&apos;re moving

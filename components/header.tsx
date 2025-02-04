@@ -3,16 +3,16 @@ import Link from "next/link";
 
 type Props = {
   isLink?: boolean;
-  isMainHeading?: boolean;
+  isH1?: boolean;
 };
 
-export default function Header({ isLink, isMainHeading }: Props) {
-  const TitleTag = isMainHeading ? "h1" : "div";
+export default function Header({ isLink, isH1 }: Props) {
+  const TitleTag = isH1 ? "h1" : "div";
 
   const titleContent = (
     <TitleTag
       className={
-        "flex items-center text-2xl font-bold text-accent-foreground md:text-3xl"
+        "flex items-center gap-2 text-2xl font-bold text-accent-foreground md:text-3xl"
       }
     >
       {isLink && <Home className="h-6 w-6" />}
@@ -35,7 +35,7 @@ export default function Header({ isLink, isMainHeading }: Props) {
           <li>
             <Link
               href="/latest"
-              className="text-muted-foreground transition-colors hover:text-accent-foreground"
+              className="text-muted-foreground underline transition-colors hover:text-accent-foreground"
             >
               Latest
             </Link>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import PageTitle from "@/components/page-title";
+import Header from "@/components/header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <main className="space-y-5 text-lg leading-relaxed">
-      <PageTitle isLink />
+      <Header isLink />
 
       <h1 className="text-center text-3xl font-semibold">Privacy Policy</h1>
 
