@@ -4,6 +4,8 @@ Diversequality is a web application that analyzes news articles and events throu
 
 [Try out the live version at dvrst.io](https://dvrst.io)
 
+This is not just a personal project; it is an experiment in "moving fast and breaking things" with AI-assisted coding. I'm trying to see how rapid development impacts not only the speed of coding but also the quality of the codebase itself and the overall quality of the end product.
+
 ## Tech Stack
 
 - [Next.js](https://nextjs.org/) with App Router
