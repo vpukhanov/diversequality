@@ -57,9 +57,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${analysis.title} | Diversequality`,
     description: analysis.summary,
-    robots: {
-      index: false,
-      follow: false,
-    },
   };
 }
