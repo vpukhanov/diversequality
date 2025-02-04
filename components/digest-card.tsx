@@ -21,7 +21,12 @@ export default function DigestCard({
         </CardTitle>
         {typeof score === "number" && (
           <div className="flex items-center gap-2">
-            <Gauge className="h-5 w-5 text-muted-foreground" />
+            <Gauge
+              className={cn(
+                "h-5 w-5 text-muted-foreground",
+                score && score < 0 ? "-scale-x-100" : "",
+              )}
+            />
             <span
               className={cn(
                 "font-sans text-xl font-medium",
