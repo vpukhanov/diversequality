@@ -1,3 +1,5 @@
+import { digestAndSave } from "@/lib/analysis";
+
 export async function GET(request: Request) {
   if (!process.env.DIGEST_RSS_URL) {
     return new Response("DIGEST_RSS_URL is not set", {
@@ -17,5 +19,8 @@ export async function GET(request: Request) {
   const rssFeed = await fetch(process.env.DIGEST_RSS_URL);
   const rssFeedText = await rssFeed.text();
 
-  return Response.json({ success: true, text: rssFeedText });
+  // Save the digest
+  const id = await digestAndSave(rssFeedText);
+
+  return Response.json({ success: true, id });
 }
