@@ -7,9 +7,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 
 import { analyseAndSave } from "../analysis";
-import { PostHogServer } from "../posthog-server";
-
-const posthog = PostHogServer();
+import serverPosthog from "../server-posthog";
 
 const ratelimit = new Ratelimit({
   redis: Redis.fromEnv(),
@@ -38,7 +36,7 @@ export async function requestAnalysis(_: unknown, form: FormData) {
   const ip = (await headers()).get("x-forwarded-for") ?? "unknown";
   const { success, limit } = await ratelimit.limit(ip);
   if (!success) {
-    posthog.capture({
+    serverPosthog.capture({
       event: "rate limit error",
       distinctId: ip,
     });
@@ -53,7 +51,7 @@ export async function requestAnalysis(_: unknown, form: FormData) {
     id = await analyseAndSave(validatedFields.data.text);
   } catch (error) {
     // TODO: Add error tracking when PostHog releases it [https://github.com/PostHog/posthog-js-lite/pull/366]
-    posthog.capture({
+    serverPosthog.capture({
       event: "analysis error",
       distinctId: ip,
       properties: {
@@ -69,7 +67,7 @@ export async function requestAnalysis(_: unknown, form: FormData) {
     };
   }
 
-  posthog.capture({
+  serverPosthog.capture({
     event: "analysis success",
     distinctId: ip,
     properties: {

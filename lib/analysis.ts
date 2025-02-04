@@ -7,7 +7,7 @@ import { randomBytes } from "crypto";
 import { z } from "zod";
 
 import { storeAnalysis } from "./db/mutations";
-import { PostHogServer } from "./posthog-server";
+import serverPosthog from "./server-posthog";
 
 const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
@@ -17,11 +17,7 @@ const openrouter = createOpenRouter({
   },
 });
 
-const model = withTracing(
-  openrouter("openai/gpt-4o-mini"),
-  PostHogServer(),
-  {},
-);
+const model = withTracing(openrouter("openai/gpt-4o-mini"), serverPosthog, {});
 
 const schema = z.object({
   type: z.union([z.literal("analysis"), z.literal("irrelevant")]),
