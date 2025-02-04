@@ -3,7 +3,7 @@ import "server-only";
 import { eq, desc } from "drizzle-orm";
 
 import { db } from "./drizzle";
-import { analysisTable } from "./schema";
+import { analysisTable, digestTable } from "./schema";
 
 export async function getAnalysisForUi(id: string) {
   const [analysis] = await db
@@ -30,4 +30,16 @@ export async function getLatestAnalyses() {
     .from(analysisTable)
     .orderBy(desc(analysisTable.createdAt))
     .limit(20);
+}
+
+export async function getLatestDigests() {
+  return await db
+    .select({
+      date: digestTable.date,
+      impact: digestTable.impact,
+      score: digestTable.score,
+    })
+    .from(digestTable)
+    .orderBy(desc(digestTable.createdAt))
+    .limit(31);
 }

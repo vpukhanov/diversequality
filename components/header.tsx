@@ -34,6 +34,14 @@ export default function Header({ isLink, isH1 }: Props) {
         <ul className="flex items-center gap-6">
           <li>
             <Link
+              href="/digests"
+              className="text-muted-foreground underline transition-colors hover:text-accent-foreground"
+            >
+              Digests
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/latest"
               className="text-muted-foreground underline transition-colors hover:text-accent-foreground"
             >
