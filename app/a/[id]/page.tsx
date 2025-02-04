@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import DigestCard from "@/components/digest-card";
 import Gauge from "@/components/gauge";
 import Header from "@/components/header";
 import ShareButton from "@/components/share-button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { getAnalysis, Props } from "./analysis";
 
@@ -22,28 +22,8 @@ export default async function AnalysisPage({ params }: Props) {
       <div className="text-center">
         <ShareButton />
       </div>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-accent-foreground">Summary</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>{analysis.summary}</p>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-accent-foreground">
-            Impact Points
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ul className="list-disc space-y-2 pl-4">
-            {analysis.impact.map((point) => (
-              <li key={point}>{point}</li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
+      <DigestCard title="Summary" content={analysis.summary} />
+      <DigestCard title="Impact Points" content={analysis.impact} />
     </main>
   );
 }

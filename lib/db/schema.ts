@@ -18,5 +18,16 @@ export const analysisTable = pgTable("analysis", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+export const digestTable = pgTable("digest", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  date: text("date").notNull(),
+  impact: text("impact").array().notNull(),
+  score: integer("score").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 export type InsertAnalysis = typeof analysisTable.$inferInsert;
 export type SelectAnalysis = typeof analysisTable.$inferSelect;
+
+export type InsertDigest = typeof digestTable.$inferInsert;
+export type SelectDigest = typeof digestTable.$inferSelect;
