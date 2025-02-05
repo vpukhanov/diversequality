@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Footer from "@/components/footer";
 
 import "./globals.css";
 import { PostHogProvider } from "./providers";
@@ -14,24 +14,7 @@ export default function RootLayout({
         <PostHogProvider>
           <div className="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-between px-6 py-16">
             {children}
-            <footer className="mt-8 text-center text-sm text-muted-foreground">
-              <div className="space-x-4">
-                <a
-                  href="https://github.com/vpukhanov/diversequality"
-                  target="_blank"
-                  className="underline hover:text-foreground"
-                >
-                  Source Code
-                </a>
-                <span>·</span>
-                <Link
-                  href="/privacy"
-                  className="underline hover:text-foreground"
-                >
-                  Privacy Policy
-                </Link>
-              </div>
-            </footer>
+            <Footer />
           </div>
         </PostHogProvider>
       </body>
