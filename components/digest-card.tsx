@@ -14,8 +14,8 @@ export default function DigestCard({
   content: string | string[];
 }) {
   return (
-    <Card className="transition-colors group-hover:bg-accent/5">
-      <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+    <Card>
+      <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0 pb-2">
         <CardTitle className="text-xl text-accent-foreground group-hover:underline">
           {title}
         </CardTitle>
