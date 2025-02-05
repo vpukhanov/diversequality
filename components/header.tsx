@@ -12,7 +12,7 @@ export default function Header({ isLink, isH1 }: Props) {
   const titleContent = (
     <TitleTag
       className={
-        "flex items-center gap-2 text-2xl font-bold text-accent-foreground md:text-3xl"
+        "flex items-center gap-2 text-3xl font-bold text-accent-foreground"
       }
     >
       {isLink && <Home className="h-6 w-6" />}
@@ -21,7 +21,7 @@ export default function Header({ isLink, isH1 }: Props) {
   );
 
   return (
-    <header className="mb-8 flex w-full items-center justify-between">
+    <header className="mb-8 flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
       {isLink ? (
         <Link href="/" className="group">
           {titleContent}
@@ -31,7 +31,7 @@ export default function Header({ isLink, isH1 }: Props) {
       )}
 
       <nav>
-        <ul className="flex items-center gap-6">
+        <ul className="flex items-center gap-4">
           <li>
             <Link
               href="/digests"
