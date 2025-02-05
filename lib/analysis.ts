@@ -90,22 +90,20 @@ For relevant content, output the answer in this JSON-like structure:
 }
 
 const digestSchema = z.object({
-  date: z.string(),
   impact: z.array(z.string()),
   score: z.number().int().min(-100).max(100),
 });
 
-export async function digestAndSave(text: string) {
+export async function digestAndSave(text: string, date: string) {
   const { object } = await generateObject({
     model: withTracing(openrouter("openai/gpt-4o-mini"), serverPosthog, {
       posthogDistinctId: "digest",
     }),
     schema: digestSchema,
     system: `
-You are an expert news aggregator, specializing in assessing how globally important events affect Diversity, Equity, and Inclusion (DEI) progress. Your task is to look at the list of the provided news items, find the relevant items, and provide a DEI summary of the day. It includes:
+You are an expert news aggregator, specializing in assessing how globally important events affect Diversity, Equity, and Inclusion (DEI) progress. Today is ${date}. Your task is to look at the list of the provided news items, find the relevant items, and provide a DEI summary of the day. It includes:
 
-- **date:** today's date, based on the majority of the news, in US format like "February 4, 2025".
-- **impact:** a list of 3-5 bullet points explaining how this day impacted DEI standing in progress in the world (e.g., through policy changes, social shifts, or changes in public awareness).
+- **impact:** a list of 3-5 bullet points explaining how today's events impacted DEI standing and progress in the world (e.g., through policy changes, social shifts, or changes in public awareness).
 - **score:** an overall DEI score for the day (scale: -100 to 100) based on the collective impact of the news. A positive overall score indicates beneficial progress on DEI, while a negative score indicates regressive effects. Use the following scoring guidance for context (choose any number between -100 and 100 as appropriate):
     - **-100:** Complete rollback of DEI initiatives; laws enforcing segregation/discrimination; policies deliberately targeting marginalized groups.
     - **-50:** Major cuts to DEI funding; removal of key DEI policies; institutional decisions that permit overt discrimination.
@@ -115,7 +113,6 @@ You are an expert news aggregator, specializing in assessing how globally import
 
 Output your results in the following JSON structure:
 {
-  "date": "<today's date, based on the majority of the news, in US format like February 4, 2025>,
   "impact": ["<impact point 1>", "<impact point 2>", ...],
   "score": <numeric score>
 }
@@ -124,7 +121,7 @@ Here's the list of news items:`,
     prompt: text,
   });
 
-  return storeDigest(object);
+  return storeDigest({ ...object, date });
 }
 
 function generateRandomBoundary() {

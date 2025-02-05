@@ -22,15 +22,20 @@ export async function GET(request: Request) {
   const rssFeedText = await rssFeed.text();
   const formattedText = formatRssFeed(rssFeedText);
 
+  // Get the current date in UTC in "February 5, 2025" format
+  const today = new Intl.DateTimeFormat("en-US", {
+    dateStyle: "long",
+    timeZone: "UTC",
+  }).format(new Date());
+
   // Save the digest
-  const id = await digestAndSave(formattedText);
+  const id = await digestAndSave(formattedText, today);
 
   return Response.json({ success: true, id });
 }
 
 interface RssItem {
   title?: string;
-  pubDate?: string;
   description?: string;
 }
 
@@ -52,8 +57,8 @@ function formatRssFeed(rssFeedText: string): string {
 
     // gpt-4o-mini token window is limited, so we have to clean up extra tags
     // and html markup that's not needed for LLM, and cut it down to content
-    const formattedItems = items.map(({ title, pubDate, description }) =>
-      `${pubDate}\n${title}\n${description}---`
+    const formattedItems = items.map(({ title, description }) =>
+      `$${title}\n${description}---`
         .replaceAll("</li>", "\n")
         .replace(/<\/?[^>]*>/g, "")
         .replaceAll("&nbsp;", " "),
