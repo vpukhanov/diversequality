@@ -11,11 +11,11 @@ export const contentType = "image/png";
 
 export default async function OpengraphImage() {
   const georgia400 = await fetch(
-    new URL("../components/fonts/georgia-400.ttf", import.meta.url),
+    new URL("../components/fonts/georgia-400.woff", import.meta.url),
   ).then((res) => res.arrayBuffer());
 
   const georgia700 = await fetch(
-    new URL("../components/fonts/georgia-700.ttf", import.meta.url),
+    new URL("../components/fonts/georgia-700.woff", import.meta.url),
   ).then((res) => res.arrayBuffer());
 
   return new ImageResponse(

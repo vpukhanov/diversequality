@@ -13,18 +13,22 @@ export const size = {
 export const contentType = "image/png";
 
 export default async function OpengraphImage({ params }: Props) {
+  const georgia400 = await fetch(
+    new URL("../../../components/fonts/georgia-400.woff", import.meta.url),
+  ).then((res) => res.arrayBuffer());
+
+  const georgia700 = await fetch(
+    new URL("../../../components/fonts/georgia-700.woff", import.meta.url),
+  ).then((res) => res.arrayBuffer());
+
+  const arial700 = await fetch(
+    new URL("../../../components/fonts/arial-700.woff", import.meta.url),
+  ).then((res) => res.arrayBuffer());
+
   const analysis = await getAnalysis(params);
   if (!analysis) {
     return notFound();
   }
-
-  const georgia400 = await fetch(
-    new URL("../../../components/fonts/georgia-400.ttf", import.meta.url),
-  ).then((res) => res.arrayBuffer());
-
-  const georgia700 = await fetch(
-    new URL("../../../components/fonts/georgia-700.ttf", import.meta.url),
-  ).then((res) => res.arrayBuffer());
 
   // Every single div NEEDS to have display: flex, or the rendering will break
   return new ImageResponse(
@@ -116,6 +120,7 @@ export default async function OpengraphImage({ params }: Props) {
                 transform: "translateX(-50%)",
                 fontSize: "42px",
                 fontWeight: 700,
+                fontFamily: "Arial",
                 color: "#4A4E69",
               }}
             >
@@ -166,6 +171,11 @@ export default async function OpengraphImage({ params }: Props) {
         {
           name: "Georgia",
           data: georgia700,
+          weight: 700,
+        },
+        {
+          name: "Arial",
+          data: arial700,
           weight: 700,
         },
       ],
