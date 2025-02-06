@@ -18,8 +18,16 @@ export default async function OpengraphImage({ params }: Props) {
     return notFound();
   }
 
-  const georgia = await fetch(
-    new URL("../../../components/fonts/georgia.ttf", import.meta.url),
+  const georgia400 = await fetch(
+    new URL("../../../components/fonts/georgia-400.ttf", import.meta.url),
+  ).then((res) => res.arrayBuffer());
+
+  const georgia700 = await fetch(
+    new URL("../../../components/fonts/georgia-700.ttf", import.meta.url),
+  ).then((res) => res.arrayBuffer());
+
+  const arial700 = await fetch(
+    new URL("../../../components/fonts/arial-700.otf", import.meta.url),
   ).then((res) => res.arrayBuffer());
 
   // Every single div NEEDS to have display: flex, or the rendering will break
@@ -50,10 +58,10 @@ export default async function OpengraphImage({ params }: Props) {
           <h1
             style={{
               display: "flex",
-              fontSize: 64,
-              fontWeight: 600,
+              fontSize: 54,
+              fontWeight: 700,
               color: "#4A4E69",
-              marginBottom: "40px",
+              marginBottom: "0px",
             }}
           >
             Diversequality
@@ -111,7 +119,8 @@ export default async function OpengraphImage({ params }: Props) {
                 left: "50%",
                 transform: "translateX(-50%)",
                 fontSize: "42px",
-                fontWeight: 600,
+                fontWeight: 700,
+                fontFamily: "Arial",
                 color: "#4A4E69",
               }}
             >
@@ -128,7 +137,7 @@ export default async function OpengraphImage({ params }: Props) {
             borderRadius: "16px",
             padding: "48px",
             boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-            maxWidth: "600px",
+            maxWidth: "800px",
             flex: "1.2",
             justifyContent: "center",
             gap: "24px",
@@ -139,7 +148,7 @@ export default async function OpengraphImage({ params }: Props) {
               key={index}
               style={{
                 display: "flex",
-                fontSize: 26,
+                fontSize: 30,
                 fontWeight: 400,
                 color: "#4B5563",
                 lineHeight: "1.5",
@@ -156,7 +165,18 @@ export default async function OpengraphImage({ params }: Props) {
       fonts: [
         {
           name: "Georgia",
-          data: georgia,
+          data: georgia400,
+          weight: 400,
+        },
+        {
+          name: "Georgia",
+          data: georgia700,
+          weight: 700,
+        },
+        {
+          name: "Arial",
+          data: arial700,
+          weight: 700,
         },
       ],
     },

@@ -10,8 +10,12 @@ export const size = {
 export const contentType = "image/png";
 
 export default async function OpengraphImage() {
-  const georgia = await fetch(
-    new URL("../components/fonts/georgia.ttf", import.meta.url),
+  const georgia400 = await fetch(
+    new URL("../components/fonts/georgia-400.ttf", import.meta.url),
+  ).then((res) => res.arrayBuffer());
+
+  const georgia700 = await fetch(
+    new URL("../components/fonts/georgia-700.ttf", import.meta.url),
   ).then((res) => res.arrayBuffer());
 
   return new ImageResponse(
@@ -34,9 +38,8 @@ export default async function OpengraphImage() {
           style={{
             display: "flex",
             fontSize: 80,
-            fontWeight: 600,
+            fontWeight: 700,
             color: "#4A4E69",
-            marginBottom: "40px",
           }}
         >
           Diversequality
@@ -44,7 +47,7 @@ export default async function OpengraphImage() {
         <div
           style={{
             display: "flex",
-            fontSize: 32,
+            fontSize: 42,
             color: "#4B5563",
             textAlign: "center",
             maxWidth: "800px",
@@ -60,7 +63,13 @@ export default async function OpengraphImage() {
       fonts: [
         {
           name: "Georgia",
-          data: georgia,
+          data: georgia400,
+          weight: 400,
+        },
+        {
+          name: "Georgia",
+          data: georgia700,
+          weight: 700,
         },
       ],
     },
