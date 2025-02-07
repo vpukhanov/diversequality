@@ -10,7 +10,10 @@ import { analyseAndSave } from "../analysis";
 import serverPosthog from "../server-posthog";
 
 const ratelimit = new Ratelimit({
-  redis: Redis.fromEnv(),
+  redis: new Redis({
+    url: process.env.KV_REST_API_URL,
+    token: process.env.KV_REST_API_TOKEN,
+  }),
   limiter: Ratelimit.slidingWindow(10, "24 h"),
 });
 

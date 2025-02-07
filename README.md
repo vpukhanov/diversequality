@@ -33,8 +33,8 @@ Required environment variables:
 - \`OPENROUTER_API_KEY\`: OpenRouter API key
 - \`NEXT_PUBLIC_POSTHOG_KEY\`: PostHog project API key
 - \`NEXT_PUBLIC_POSTHOG_HOST\`: PostHog host URL
-- \`UPSTASH_REDIS_REST_URL\`: Upstash Redis REST URL
-- \`UPSTASH_REDIS_REST_TOKEN\`: Upstash Redis REST token
+- \`KV_REST_API_URL\`: Upstash Redis REST URL
+- \`KV_REST_API_TOKEN\`: Upstash Redis REST token
 
 Run the development server:
 
