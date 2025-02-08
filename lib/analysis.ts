@@ -1,13 +1,12 @@
 import "server-only";
 
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { withTracing } from "@posthog/ai";
+import { track } from "@vercel/analytics/server";
 import { generateObject } from "ai";
 import { randomBytes } from "crypto";
 import { z } from "zod";
 
 import { storeAnalysis, storeDigest } from "./db/mutations";
-import serverPosthog from "./server-posthog";
 
 const openrouter = createOpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
@@ -25,14 +24,12 @@ const analysisSchema = z.object({
   score: z.number().int().min(-100).max(100),
 });
 
-export async function analyseAndSave(text: string, distinctId: string) {
+export async function analyseAndSave(text: string) {
   // Generate random boundary name for each request to prevent prompt injection
   const boundary = generateRandomBoundary();
 
-  const { object } = await generateObject({
-    model: withTracing(openrouter("openai/gpt-4o-mini"), serverPosthog, {
-      posthogDistinctId: distinctId,
-    }),
+  const { object, usage } = await generateObject({
+    model: openrouter("openai/gpt-4o-mini"),
     schema: analysisSchema,
     system: `
 You are an expert news analysis assistant specializing in evaluating how a described event, update, or situation will affect the progress of Diversity, Equity, and Inclusion (DEI). Your task is to assess the impact on DEI progressiveness—not merely to summarize reality, but to evaluate whether the event drives DEI forward or hinders it.
@@ -79,6 +76,11 @@ For relevant content, output the answer in this JSON-like structure:
     prompt: `<${boundary}>${text}</${boundary}>`,
   });
 
+  track("LLM Analysis Generation", {
+    promptTokens: usage.promptTokens,
+    completionTokens: usage.completionTokens,
+  });
+
   if (object.type === "irrelevant") {
     throw new Error(`Cannot analyze: ${object.summary}`);
   }
@@ -95,10 +97,8 @@ const digestSchema = z.object({
 });
 
 export async function digestAndSave(text: string, date: string) {
-  const { object } = await generateObject({
-    model: withTracing(openrouter("openai/gpt-4o-mini"), serverPosthog, {
-      posthogDistinctId: "digest",
-    }),
+  const { object, usage } = await generateObject({
+    model: openrouter("openai/gpt-4o-mini"),
     schema: digestSchema,
     system: `
 You are an expert news aggregator, specializing in assessing how globally important events affect Diversity, Equity, and Inclusion (DEI) progress. Today is ${date}. Your task is to look at the list of the provided news items, find the relevant items, and provide a DEI summary of the day. It includes:
@@ -119,6 +119,11 @@ Output your results in the following JSON structure:
 
 Here's the list of news items:`,
     prompt: text,
+  });
+
+  track("LLM Digest Generation", {
+    promptTokens: usage.promptTokens,
+    completionTokens: usage.completionTokens,
   });
 
   return storeDigest({ ...object, date });

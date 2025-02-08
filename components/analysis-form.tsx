@@ -1,9 +1,8 @@
 "use client";
 
-import { useContext } from "react";
-import { useActionState } from "react";
+import { track } from "@vercel/analytics/react";
+import { useActionState, useCallback } from "react";
 
-import { DistinctIdContext } from "@/app/providers";
 import { requestAnalysis } from "@/lib/actions/request-analysis";
 
 import { Button } from "./ui/button";
@@ -14,10 +13,16 @@ export default function AnalysisForm() {
     errors: {},
   });
 
-  const distinctId = useContext(DistinctIdContext);
+  const handleSubmit = useCallback(() => {
+    track("Analysis Form Submission");
+  }, []);
 
   return (
-    <form action={action} className="space-y-2 font-sans">
+    <form
+      action={action}
+      className="space-y-2 font-sans"
+      onSubmit={handleSubmit}
+    >
       <Textarea
         name="text"
         minLength={100}
@@ -26,7 +31,6 @@ export default function AnalysisForm() {
         className="min-h-[200px] bg-white"
         required
       />
-      <input type="hidden" name="distinctId" value={distinctId ?? ""} />
       <Button
         type="submit"
         disabled={pending}
