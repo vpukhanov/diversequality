@@ -35,6 +35,7 @@ export default function PrivacyPage() {
                 Their{" "}
                 <a
                   href="https://platform.openai.com/docs/models/how-we-use-your-data#how-we-use-your-data"
+                  target="_blank"
                   className="font-normal underline"
                 >
                   privacy policy
@@ -59,21 +60,16 @@ export default function PrivacyPage() {
             <h3 className="mb-2 font-semibold">Analytics</h3>
             <ul className="list-disc space-y-2 pl-4">
               <li>
-                I use PostHog to understand how people use the service so I can
-                improve it. Their{" "}
+                I use Vercel Analytics to understand how people use the service
+                so I can improve it. Their{" "}
                 <a
-                  href="https://posthog.com/privacy"
+                  href="https://vercel.com/docs/analytics/privacy-policy"
+                  target="_blank"
                   className="font-normal underline"
                 >
                   privacy policy
                 </a>{" "}
                 applies to this data collection.
-              </li>
-              <li>
-                I generate a random identifier to analyze your interactions with
-                the website and track any errors you encounter. This information
-                enables me to gather usage analytics, which in turn helps
-                enhance the service and its reliability.
               </li>
             </ul>
           </div>

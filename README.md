@@ -16,7 +16,6 @@ This is not just a personal project; it is an experiment in "moving fast and bre
 - [OpenRouter](https://openrouter.ai/) AI Provider
 - [Upstash](https://upstash.com/) Redis and Rate Limiting
 - [Zod](https://zod.dev/) Schema Validation
-- [PostHog](https://posthog.com/) Analytics
 - [Shadcn](https://ui.shadcn.com/) UI Components
 
 ## Setup
@@ -31,8 +30,6 @@ Required environment variables:
 
 - \`DATABASE_URL\`: Neon database connection string
 - \`OPENROUTER_API_KEY\`: OpenRouter API key
-- \`NEXT_PUBLIC_POSTHOG_KEY\`: PostHog project API key
-- \`NEXT_PUBLIC_POSTHOG_HOST\`: PostHog host URL
 - \`KV_REST_API_URL\`: Upstash Redis REST URL
 - \`KV_REST_API_TOKEN\`: Upstash Redis REST token
 
