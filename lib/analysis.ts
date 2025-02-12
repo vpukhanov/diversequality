@@ -1,9 +1,11 @@
 import "server-only";
 
+import { Readability } from "@mozilla/readability";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { track } from "@vercel/analytics/server";
 import { generateObject } from "ai";
 import { randomBytes } from "crypto";
+import { JSDOM } from "jsdom";
 import { z } from "zod";
 
 import { storeAnalysis, storeDigest } from "./db/mutations";
@@ -24,7 +26,10 @@ const analysisSchema = z.object({
   score: z.number().int().min(-100).max(100),
 });
 
-export async function analyseAndSave(text: string) {
+export async function analyseAndSave(input: string) {
+  input = input.trim();
+  const text = isValidUrl(input) ? await fetchUrlContent(input) : input;
+
   // Generate random boundary name for each request to prevent prompt injection
   const boundary = generateRandomBoundary();
 
@@ -131,4 +136,49 @@ Here's the list of news items:`,
 
 function generateRandomBoundary() {
   return `X${randomBytes(6).toString("hex").toUpperCase()}`;
+}
+
+function isValidUrl(url: string) {
+  try {
+    return Boolean(new URL(url));
+  } catch {
+    return false;
+  }
+}
+
+// Fetch the content of a URL and return the main text content
+async function fetchUrlContent(url: string) {
+  try {
+    const response = await fetch(url, {
+      headers: {
+        "User-Agent": "Diversequality/1.0 (https://dvrst.io)",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch URL: ${response.status} ${response.statusText}`,
+      );
+    }
+
+    const contentType = response.headers.get("content-type") || "";
+
+    // Only handle text content
+    if (!contentType.includes("html") && !contentType.includes("text")) {
+      throw new Error("Only HTML or text content is supported");
+    }
+
+    const html = await response.text();
+    const dom = new JSDOM(html, { url });
+    const reader = new Readability(dom.window.document);
+    const article = reader.parse();
+
+    if (!article) {
+      throw new Error("Failed to extract article content");
+    }
+
+    return `${article.title}\n\n${article.textContent}`;
+  } catch (error) {
+    throw new Error(`Failed to fetch URL content: ${error}`);
+  }
 }

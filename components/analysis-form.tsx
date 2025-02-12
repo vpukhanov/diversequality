@@ -25,9 +25,8 @@ export default function AnalysisForm() {
     >
       <Textarea
         name="text"
-        minLength={100}
         maxLength={20000}
-        placeholder="Paste your article or describe the event here..."
+        placeholder="Paste your article's text or URL here..."
         className="min-h-[200px] bg-white"
         required
       />
