@@ -66,7 +66,7 @@ export async function digestAndSave(text: string, date: string) {
   const { object, usage } = await generateObject({
     model: openrouter("openai/gpt-4o-mini"),
     schema: digestSchema,
-    system: digestPrompt,
+    system: digestPrompt.replaceAll("{date}", date),
     prompt: text,
   });
 
