@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 
-import DigestCard from "@/components/digest-card";
 import Header from "@/components/header";
 import { getLatestDigests } from "@/lib/db/queries";
+
+import FilteredDigests from "./filtered-digests";
 
 export const metadata: Metadata = {
   title: "Daily Digests | Diversequality",
@@ -18,12 +19,7 @@ export default async function DigestPage() {
     <main className="space-y-5 text-lg leading-relaxed">
       <Header isLink />
       <h1 className="text-center text-3xl font-semibold">Daily Digests</h1>
-
-      {latestDigests.map((digest) => (
-        <div key={digest.date}>
-          <DigestCard title={digest.date} content={digest.impact} />
-        </div>
-      ))}
+      <FilteredDigests digests={latestDigests} />
     </main>
   );
 }
