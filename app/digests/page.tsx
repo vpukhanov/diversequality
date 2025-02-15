@@ -21,7 +21,11 @@ export default async function DigestPage() {
 
       {latestDigests.map((digest) => (
         <div key={digest.date}>
-          <DigestCard title={digest.date} content={digest.impact} />
+          <DigestCard
+            title={digest.date}
+            content={digest.impact}
+            score={digest.score}
+          />
         </div>
       ))}
     </main>
