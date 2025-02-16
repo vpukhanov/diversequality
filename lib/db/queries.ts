@@ -57,3 +57,23 @@ export async function getDigestForUi(id: string) {
 
   return digest;
 }
+
+export async function getAnalysesForSitemap() {
+  return await db
+    .select({
+      id: analysisTable.id,
+      createdAt: analysisTable.createdAt,
+    })
+    .from(analysisTable)
+    .orderBy(desc(analysisTable.createdAt));
+}
+
+export async function getDigestsForSitemap() {
+  return await db
+    .select({
+      id: digestTable.id,
+      createdAt: digestTable.createdAt,
+    })
+    .from(digestTable)
+    .orderBy(desc(digestTable.createdAt));
+}
