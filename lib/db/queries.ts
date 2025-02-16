@@ -35,6 +35,7 @@ export async function getLatestAnalyses() {
 export async function getLatestDigests() {
   return await db
     .select({
+      id: digestTable.id,
       date: digestTable.date,
       impact: digestTable.impact,
       score: digestTable.score,
@@ -42,4 +43,17 @@ export async function getLatestDigests() {
     .from(digestTable)
     .orderBy(desc(digestTable.createdAt))
     .limit(31);
+}
+
+export async function getDigestForUi(id: string) {
+  const [digest] = await db
+    .select({
+      date: digestTable.date,
+      impact: digestTable.impact,
+      score: digestTable.score,
+    })
+    .from(digestTable)
+    .where(eq(digestTable.id, id));
+
+  return digest;
 }
