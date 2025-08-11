@@ -19,10 +19,10 @@ const ratelimit = new Ratelimit({
 
 const schema = z.object({
   text: z
-    .string({ required_error: "Text is required" })
+    .string({ error: "Text is required" })
     // Zod counts length of the string different from client side textarea, so we add 2000 to the max length
     // to account for the small difference and not ruin the user experience
-    .max(22000, { message: "Text must be less than 20,000 characters" }),
+    .max(22000, { error: "Text must be less than 20,000 characters" }),
 });
 
 export async function requestAnalysis(_: unknown, form: FormData) {
