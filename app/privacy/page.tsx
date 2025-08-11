@@ -31,10 +31,10 @@ export default function PrivacyPage() {
                 results when visiting the unique URL created for each analysis.
               </li>
               <li>
-                Text is analysed using GPT-4o-mini by OpenAI through OpenRouter.
-                Their{" "}
+                Text is analysed using Gemini 2.5 Flash Lite by Google through
+                OpenRouter. Their{" "}
                 <a
-                  href="https://platform.openai.com/docs/models/how-we-use-your-data#how-we-use-your-data"
+                  href="https://cloud.google.com/terms/cloud-privacy-notice"
                   target="_blank"
                   className="font-normal underline"
                 >
@@ -125,8 +125,8 @@ export default function PrivacyPage() {
         </CardContent>
       </Card>
 
-      <p className="text-center text-sm text-muted-foreground">
-        Last updated: February 4th, 2025
+      <p className="text-muted-foreground text-center text-sm">
+        Last updated: August 11th, 2025
       </p>
     </main>
   );

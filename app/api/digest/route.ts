@@ -49,8 +49,8 @@ function formatRssFeed(rssFeedText: string): string {
     // Get all items
     const items = result.rss?.channel?.item || [];
 
-    // gpt-4o-mini token window is limited, so we have to clean up extra tags
-    // and html markup that's not needed for LLM, and cut it down to content
+    // token window is limited, so we have to clean up extra tags and html
+    // markup that's not needed for LLM, and cut it down to content
     const formattedItems = items.map(({ title, description }) =>
       `$${title}\n${description}---`
         .replaceAll("</li>", "\n")

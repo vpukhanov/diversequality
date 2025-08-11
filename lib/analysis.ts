@@ -36,15 +36,15 @@ export async function analyseAndSave(input: string) {
   const boundary = generateRandomBoundary();
 
   const { object, usage } = await generateObject({
-    model: openrouter("openai/gpt-4o-mini"),
+    model: openrouter("google/gemini-2.5-flash-lite"),
     schema: analysisSchema,
     system: analysisPrompt.replaceAll("{boundary}", boundary),
     prompt: `<${boundary}>${text}</${boundary}>`,
   });
 
   track("LLM Analysis Generation", {
-    promptTokens: usage.promptTokens,
-    completionTokens: usage.completionTokens,
+    promptTokens: usage.inputTokens ?? "unknown",
+    completionTokens: usage.outputTokens ?? "unknown",
   });
 
   if (object.type === "irrelevant") {
@@ -64,15 +64,15 @@ const digestSchema = z.object({
 
 export async function digestAndSave(text: string, date: string) {
   const { object, usage } = await generateObject({
-    model: openrouter("openai/gpt-4o-mini"),
+    model: openrouter("google/gemini-2.5-flash-lite"),
     schema: digestSchema,
     system: digestPrompt.replaceAll("{date}", date),
     prompt: text,
   });
 
   track("LLM Digest Generation", {
-    promptTokens: usage.promptTokens,
-    completionTokens: usage.completionTokens,
+    promptTokens: usage.inputTokens ?? "unknown",
+    completionTokens: usage.outputTokens ?? "unknown",
   });
 
   return storeDigest({ ...object, date });
