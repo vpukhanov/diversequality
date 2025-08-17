@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "Recent diversity and inclusion impact analyses",
 };
 
-export const revalidate = 300; // invalidate every 5 minutes
+export const revalidate = 86400; // invalidate every 24 hours (manual invalidation on new analysis)
 
 export default async function LatestPage() {
   const latestAnalyses = await getLatestAnalyses();

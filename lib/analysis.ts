@@ -6,6 +6,7 @@ import { track } from "@vercel/analytics/server";
 import { generateObject } from "ai";
 import { randomBytes } from "crypto";
 import { JSDOM } from "jsdom";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 import { storeAnalysis, storeDigest } from "./db/mutations";
@@ -51,10 +52,14 @@ export async function analyseAndSave(input: string) {
     throw new Error(`Cannot analyze: ${object.summary}`);
   }
 
-  return storeAnalysis({
+  const id = await storeAnalysis({
     ...object,
     text,
   });
+
+  revalidatePath("/latest");
+
+  return id;
 }
 
 const digestSchema = z.object({
@@ -75,7 +80,11 @@ export async function digestAndSave(text: string, date: string) {
     completionTokens: usage.outputTokens ?? "unknown",
   });
 
-  return storeDigest({ ...object, date });
+  const id = await storeDigest({ ...object, date });
+
+  revalidatePath("/digests");
+
+  return id;
 }
 
 function generateRandomBoundary() {

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "This month's diversity and inclusion summaries and ratings",
 };
 
-export const revalidate = 3600; // invalidate every hour
+export const revalidate = 86400; // invalidate every 24 hours (manual invalidation on new digest)
 
 export default async function DigestPage() {
   const latestDigests = await getLatestDigests();
