@@ -97,22 +97,6 @@ export default function PrivacyPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-accent-foreground">Your Rights</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>
-            If you&apos;d like your submitted text and its analysis to be
-            removed from the database, please email me at{" "}
-            <a href="mailto:vyacheslav@pukhanov.ru" className="underline">
-              vyacheslav@pukhanov.ru
-            </a>
-            . I&apos;ll handle your request as quickly as possible.
-          </p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
           <CardTitle className="text-accent-foreground">
             Changes to This Policy
           </CardTitle>
